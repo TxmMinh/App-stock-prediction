@@ -19,12 +19,12 @@ logging.basicConfig(level=logging.INFO)
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'password',
+    'password': 'password1234',
     'database': 'stock_prediction'
 }
 
 # Đường dẫn đến thư mục chứa mô hình đã lưu
-model_path = 'E:\\Personal\\Project\\Pattern\\model\\Model_TKAN_S_HPG'
+model_path = 'E:\\#UIT\\31-Pattern\\Project\\App-stock-prediction\\model\\Model_TKAN_S_HPG'
 
 # Tải mô hình dự đoán
 loaded_model = tf.saved_model.load(model_path)
@@ -151,7 +151,9 @@ def predict_percentage(inputs):
 # Lấy dữ liệu percentage từ database
 def get_percentage_data(cursor, start_time):
     percentages = []
-    for i in range(4):
+    for i in range(5):
+        if i == 0:
+            continue
         query = """
         SELECT Percentage FROM hpg_table
         WHERE Ticker = 'HPG' AND Timestamp = %s
@@ -159,7 +161,7 @@ def get_percentage_data(cursor, start_time):
         timestamp = start_time - timedelta(minutes=i * 5)
         cursor.execute(query, (timestamp,))
         result = cursor.fetchone()
-        logging.error(f"Error inserting data: {result}")
+        logging.error(f"insert percentage data: {result}")
         if result:
             percentages.insert(0, result[0])  # Thêm vào đầu danh sách
         else:
