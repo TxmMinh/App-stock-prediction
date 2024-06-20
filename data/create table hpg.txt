@@ -1,0 +1,12 @@
+-- auto-generated definition
+create table hpg_table
+(
+    ID         int auto_increment
+        primary key,
+    Ticker     varchar(50) not null,
+    Timestamp  timestamp   not null,
+    Close      double      not null,
+    Prev_Close double      null,
+    Percentage double      null
+);
+
