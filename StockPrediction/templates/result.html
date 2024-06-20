@@ -1,13 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Kết quả dự đoán</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicting stock prices</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #0066cc;
+        }
+        p {
+            margin: 0.5em 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 1em;
+            padding: 0.75em 1.5em;
+            border-radius: 4px;
+            background-color: #0066cc;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #004c99;
+        }
+    </style>
 </head>
 <body>
-    <h1>Kết quả dự đoán</h1>
-    <p>Giờ dự đoán: {{ prediction_time }}</p>
-    <p>Phần trăm thay đổi dự đoán: {{ predicted_percentage }}%</p>
-    <p>Giá đóng cửa dự đoán: {{ predicted_close }}</p>
-    <a href="/">Dự đoán lại</a>
+    <div class="container">
+        <h1>Prediction result</h1>
+        <p><b>Prediction time: {{ prediction_time }}</b></p>
+        <p>Percentage change prediction: {{ predicted_percentage }}%</p>
+        <p>Predicted closing price: {{ predicted_close }}</p>
+        <a href="/">Re-predict</a>
+    </div>
 </body>
 </html>

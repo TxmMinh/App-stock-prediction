@@ -1,14 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dự đoán giá cổ phiếu</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicting stock prices</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #0066cc;
+        }
+        label, input {
+            display: block;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        input[type="text"] {
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        button {
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: 4px;
+            background-color: #0066cc;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #004c99;
+        }
+        .note {
+            margin-top: 1em;
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+        .error {
+            margin-top: 1em;
+            color: #ff0000;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <h1>Nhập giờ cần dự đoán phần trăm thay đổi</h1>
-    <form action="/predict" method="post">
-        <label for="prediction_time">Giờ cần dự đoán (HH:MM):</label>
-        <input type="text" id="prediction_time" name="prediction_time">
-        <button type="submit">Dự đoán</button>
-    </form>
+    <div class="container">
+        <h1>Enter the hour you need to predict the close price</h1>
+        <form action="/predict" method="post">
+            {% if error_message %}
+            <div class="error">
+                <p style="font-size: 20px"><b>{{ error_message }}</b></p>
+            </div>
+            <a href="/">Predict again</a>
+            {% else %}
+            <label for="prediction_time">The hour for prediction (HH:MM):</label>
+            <input type="text" id="prediction_time" name="prediction_time" required>
+            <button type="submit">Prediction</button>
+            {% endif %}
+        </form>
+        <div class="note">
+            <p><strong>Attention:</strong></p>
+            <p>Predictions only after 09:35</p>
+            <p>Predict 5 minutes from the current time</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -183,7 +183,17 @@ def predict_stock_price(request: Request, prediction_time: str = Form(...)):
     try:
         prediction_time = datetime.strptime(prediction_time, '%H:%M').time()
         if prediction_time <= datetime.strptime('09:35', '%H:%M').time():
-            raise HTTPException(status_code=400, detail="Prediction time must be after 09:35")
+            return templates.TemplateResponse("form.html", {
+                "request": request,
+                "error_message": "Prediction time must be after 09:35"
+            })
+
+        current_time = datetime.now().time()
+        if prediction_time <= (datetime.combine(datetime.today(), current_time) - timedelta(minutes=5)).time():
+            return templates.TemplateResponse("form.html", {
+                "request": request,
+                "error_message": "Prediction time must be at least 5 minutes after the current time"
+            })
 
         # Lấy dữ liệu từ DB
         current_date = datetime.now().date()
@@ -209,7 +219,10 @@ def predict_stock_price(request: Request, prediction_time: str = Form(...)):
         if current_close:
             current_close = current_close[0]
         else:
-            raise HTTPException(status_code=404, detail="No close price found for the last 5 minutes")
+            return templates.TemplateResponse("form.html", {
+                "request": request,
+                "error_message": "No close price found for the last 5 minutes"
+            })
 
         # Tính giá close dự đoán
         predicted_close = current_close * (1 + predicted_percentage / 100)
@@ -221,7 +234,21 @@ def predict_stock_price(request: Request, prediction_time: str = Form(...)):
             "predicted_close": predicted_close
         })
     except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid time format. Use HH:MM")
+        return templates.TemplateResponse("form.html", {
+            "request": request,
+            "error_message": "Invalid time format. Use HH:MM"
+        })
+    except HTTPException as e:
+        return templates.TemplateResponse("form.html", {
+            "request": request,
+            "error_message": e.detail
+        })
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        return templates.TemplateResponse("form.html", {
+            "request": request,
+            "error_message": "An unexpected error occurred. Please try again later."
+        })
 
 
 if __name__ == "__main__":
